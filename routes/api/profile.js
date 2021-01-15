@@ -84,4 +84,26 @@ router.delete('/', passport.authenticate('jwt', {session: false}), (req, res) =>
             res.json(err);
         });    
 });
+
+//add-experience route -> PRIVATE
+
+router.post('/add-experience', passport.authenticate('jwt', {session: false}), (req, res) => {
+
+    const errors = {}   
+    console.log('on server')
+    Profile.findOne({ user: req.user.id})
+    .then(profile => {
+        const newExp = {
+            company: req.body.company,
+            from: req.body.from,
+            to: req.body.to
+        }
+        
+        // Add to the experiance array
+        profile.experience.unshift(newExp);    
+
+        profile.save().then(profile => res.json(profile))
+    })
+});
+
 module.exports = router;
