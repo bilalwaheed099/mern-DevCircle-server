@@ -6,7 +6,7 @@ const passport = require('passport');
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
 const posts = require('./routes/api/posts');
-const testss = require('./testss');
+require('dotenv').config()
 
 const app = express();
 
@@ -17,10 +17,8 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => {res.send("Hello World!")});
 
-const db = require('./config/keys').mongoURI;
-
 mongoose
-    .connect(db)
+    .connect(process.env.MONGO_URI)
     .then(() => console.log('Connected to database successfully!!'))
     .catch(() => console.log('Error in connection'));
 
@@ -28,7 +26,6 @@ mongoose
 app.use('/api/users', users);    
 app.use('/api/profile', profile);    
 app.use('/api/posts', posts);   
-app.use('/testss', testss)
 
 //Passport middleware
 
